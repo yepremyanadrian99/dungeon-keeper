@@ -4,6 +4,9 @@ import am.adrian.dungeonkeeper.controller.ConsoleGameController;
 import am.adrian.dungeonkeeper.game.ConsoleGame;
 import am.adrian.dungeonkeeper.game.ConsoleGameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
+import am.adrian.dungeonkeeper.game.object.Wall;
+import am.adrian.dungeonkeeper.helper.ObjectGenerator;
+import am.adrian.dungeonkeeper.helper.Point2D;
 import am.adrian.dungeonkeeper.renderer.ConsoleGameRenderer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -46,7 +49,12 @@ public class GameConfig {
     @Bean
     public ConsoleGameMap consoleGameMap(@Value("${gameMap.width}") int width,
                                          @Value("${gameMap.height}") int height) {
-        return new ConsoleGameMap(width, height);
+        final ConsoleGameMap map = new ConsoleGameMap(width, height);
+        map.addObjects(ObjectGenerator.betweenPoints(new Point2D(0, 0), new Point2D(width - 1, 0), Wall::new));
+        map.addObjects(ObjectGenerator.betweenPoints(new Point2D(0, 0), new Point2D(0, height - 1), Wall::new));
+        map.addObjects(ObjectGenerator.betweenPoints(0, height - 1, width - 1, height - 1, Wall::new));
+        map.addObjects(ObjectGenerator.betweenPoints(width - 1, 0, width - 1, height - 1, Wall::new));
+        return map;
     }
 
     @Bean

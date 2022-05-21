@@ -31,3 +31,7 @@ test {
 application {
     mainClass = 'am.adrian.dungeonkeeper.Application'
 }
+
+run {
+    standardInput = System.in
+}

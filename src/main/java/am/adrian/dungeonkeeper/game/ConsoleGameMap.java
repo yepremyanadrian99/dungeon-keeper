@@ -1,5 +1,6 @@
 package am.adrian.dungeonkeeper.game;
 
+import am.adrian.dungeonkeeper.common.ConsoleGameObject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +18,10 @@ public class ConsoleGameMap {
 
     public void addObject(ConsoleGameObject object) {
         objects.add(object);
+    }
+
+    public void addObjects(Collection<? extends ConsoleGameObject> objectsToAdd) {
+        objects.addAll(objectsToAdd);
     }
 
     public void removeObject(ConsoleGameObject object) {

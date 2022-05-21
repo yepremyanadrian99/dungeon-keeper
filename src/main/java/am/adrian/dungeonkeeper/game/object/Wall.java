@@ -1,6 +1,6 @@
 package am.adrian.dungeonkeeper.game.object;
 
-import am.adrian.dungeonkeeper.game.ConsoleGameObject;
+import am.adrian.dungeonkeeper.common.ConsoleGameObject;
 import am.adrian.dungeonkeeper.helper.Point2D;
 import lombok.RequiredArgsConstructor;
 
