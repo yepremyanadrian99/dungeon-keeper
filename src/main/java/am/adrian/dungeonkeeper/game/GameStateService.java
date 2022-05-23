@@ -1,6 +1,6 @@
 package am.adrian.dungeonkeeper.game;
 
-import am.adrian.dungeonkeeper.constant.GameState;
+import am.adrian.dungeonkeeper.common.constant.GameState;
 import org.springframework.stereotype.Service;
 
 @Service

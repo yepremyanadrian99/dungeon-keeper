@@ -1,4 +1,4 @@
-package am.adrian.dungeonkeeper.common;
+package am.adrian.dungeonkeeper.common.handler;
 
 public interface HandlerContainer {
 

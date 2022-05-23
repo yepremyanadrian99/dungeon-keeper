@@ -1,8 +1,8 @@
 package am.adrian.dungeonkeeper.game;
 
-import am.adrian.dungeonkeeper.common.Handler;
-import am.adrian.dungeonkeeper.common.HandlerContainer;
-import am.adrian.dungeonkeeper.constant.GameState;
+import am.adrian.dungeonkeeper.common.constant.GameState;
+import am.adrian.dungeonkeeper.common.handler.Handler;
+import am.adrian.dungeonkeeper.common.handler.HandlerContainer;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,9 +12,9 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 
 @RequiredArgsConstructor
-public class ConsoleGame implements HandlerContainer {
+public class Game implements HandlerContainer {
 
-    private static final Logger logger = LogManager.getLogger(ConsoleGame.class);
+    private static final Logger logger = LogManager.getLogger(Game.class);
 
     private final Collection<Handler> handlers = new ArrayList<>();
 

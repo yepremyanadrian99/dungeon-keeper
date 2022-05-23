@@ -1,17 +1,24 @@
 package am.adrian.dungeonkeeper.config;
 
-import am.adrian.dungeonkeeper.controller.ConsoleGameController;
-import am.adrian.dungeonkeeper.game.ConsoleGame;
-import am.adrian.dungeonkeeper.game.ConsoleGameMap;
+import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
+import am.adrian.dungeonkeeper.common.health.Health;
+import am.adrian.dungeonkeeper.controller.GameController;
+import am.adrian.dungeonkeeper.game.Game;
+import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
-import am.adrian.dungeonkeeper.game.object.Wall;
+import am.adrian.dungeonkeeper.game.MoveValidator;
+import am.adrian.dungeonkeeper.game.character.Goblin;
+import am.adrian.dungeonkeeper.game.object.Impenetrable;
 import am.adrian.dungeonkeeper.helper.ObjectGenerator;
-import am.adrian.dungeonkeeper.helper.Point2D;
-import am.adrian.dungeonkeeper.renderer.ConsoleGameRenderer;
+import am.adrian.dungeonkeeper.renderer.GameRenderer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -20,6 +27,14 @@ import java.util.concurrent.Executors;
 
 @Configuration
 public class GameConfig {
+
+    private static final Logger logger = LogManager.getLogger(GameConfig.class);
+
+    @Autowired
+    private GameMap map;
+
+    @Autowired
+    private MoveValidator moveValidator;
 
     // Should only be used for executing handlers.
     // Otherwise, the game might not exit after it's finished.
@@ -47,24 +62,37 @@ public class GameConfig {
     }
 
     @Bean
-    public ConsoleGameMap consoleGameMap(@Value("${gameMap.width}") int width,
-                                         @Value("${gameMap.height}") int height) {
-        final ConsoleGameMap map = new ConsoleGameMap(width, height);
-        map.addObjects(ObjectGenerator.betweenPoints(new Point2D(0, 0), new Point2D(width - 1, 0), Wall::new));
-        map.addObjects(ObjectGenerator.betweenPoints(new Point2D(0, 0), new Point2D(0, height - 1), Wall::new));
-        map.addObjects(ObjectGenerator.betweenPoints(0, height - 1, width - 1, height - 1, Wall::new));
-        map.addObjects(ObjectGenerator.betweenPoints(width - 1, 0, width - 1, height - 1, Wall::new));
-        return map;
+    public GameMap gameMap(@Value("${gameMap.width}") int width,
+                           @Value("${gameMap.height}") int height) {
+        return new GameMap(width, height);
     }
 
     @Bean
-    public ConsoleGame consoleGame(GameStateService stateService,
-                                   ExecutorService handlerExecutor,
-                                   ConsoleGameController gameController,
-                                   ConsoleGameRenderer gameRenderer) {
-        final ConsoleGame consoleGame = new ConsoleGame(stateService, handlerExecutor);
-        consoleGame.registerHandler(gameController);
-        consoleGame.registerHandler(gameRenderer);
-        return consoleGame;
+    public Game game(GameStateService stateService,
+                     ExecutorService handlerExecutor,
+                     GameController gameController,
+                     GameRenderer gameRenderer) {
+        final Game game = new Game(stateService, handlerExecutor);
+        game.registerHandler(gameController);
+        game.registerHandler(gameRenderer);
+        return game;
+    }
+
+    @PostConstruct
+    public void initObjects() {
+        final int width = map.getWidth();
+        final int height = map.getHeight();
+        map.addObjects(ObjectGenerator.betweenPoints(new ImmutableCoords(0, 0), new ImmutableCoords(width - 1, 0), Impenetrable::new));
+        map.addObjects(ObjectGenerator.betweenPoints(new ImmutableCoords(0, 0), new ImmutableCoords(0, height - 1), Impenetrable::new));
+        map.addObjects(ObjectGenerator.betweenPoints(0, height - 1, width - 1, height - 1, Impenetrable::new));
+        map.addObjects(ObjectGenerator.betweenPoints(width - 1, 0, width - 1, height - 1, Impenetrable::new));
+    }
+
+    @PostConstruct
+    public void initCharacters() {
+        final Goblin goblin = new Goblin(new Health(100), moveValidator);
+        goblin.getCoords().setX(10);
+        goblin.getCoords().setY(4);
+        map.addObject(goblin);
     }
 }

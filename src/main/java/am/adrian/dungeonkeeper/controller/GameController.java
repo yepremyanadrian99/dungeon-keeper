@@ -1,7 +1,7 @@
 package am.adrian.dungeonkeeper.controller;
 
-import am.adrian.dungeonkeeper.common.Handler;
-import am.adrian.dungeonkeeper.constant.GameState;
+import am.adrian.dungeonkeeper.common.constant.GameState;
+import am.adrian.dungeonkeeper.common.handler.Handler;
 import am.adrian.dungeonkeeper.game.GameStateService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -12,9 +12,9 @@ import java.util.Scanner;
 
 @Component
 @RequiredArgsConstructor
-public class ConsoleGameController implements Handler {
+public class GameController implements Handler {
 
-    private final Logger logger = LogManager.getLogger(ConsoleGameController.class);
+    private final Logger logger = LogManager.getLogger(GameController.class);
 
     private final GameStateService stateService;
     private final Scanner playerInput;

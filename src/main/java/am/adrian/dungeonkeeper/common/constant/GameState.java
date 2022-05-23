@@ -1,4 +1,4 @@
-package am.adrian.dungeonkeeper.constant;
+package am.adrian.dungeonkeeper.common.constant;
 
 public enum GameState {
     NOT_STARTED,

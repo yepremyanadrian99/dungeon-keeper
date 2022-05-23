@@ -1,9 +1,10 @@
 package am.adrian.dungeonkeeper.renderer;
 
-import am.adrian.dungeonkeeper.common.ConsoleGameObject;
-import am.adrian.dungeonkeeper.common.Handler;
-import am.adrian.dungeonkeeper.game.ConsoleGameMap;
+import am.adrian.dungeonkeeper.common.handler.Handler;
+import am.adrian.dungeonkeeper.common.object.GameObject;
+import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
+import am.adrian.dungeonkeeper.helper.ConsoleUtils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,21 +14,22 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
 @Component
 @RequiredArgsConstructor
-public class ConsoleGameRenderer implements Handler {
+public class GameRenderer implements Handler {
 
-    private static final Logger logger = LogManager.getLogger(ConsoleGameRenderer.class);
+    private static final Logger logger = LogManager.getLogger(GameRenderer.class);
 
     private final GameStateService stateService;
-    private final ConsoleGameMap map;
+    private final GameMap map;
     private final PrintStream output;
 
-    @Value("#{T(Math).min(${display.width}, consoleGameMap.width)}")
+    @Value("#{T(Math).min(${display.width}, gameMap.width)}")
     private int displayWidth;
-    @Value("#{T(Math).min(${display.height}, consoleGameMap.height)}")
+    @Value("#{T(Math).min(${display.height}, gameMap.height)}")
     private int displayHeight;
 
     @Getter
@@ -48,24 +50,28 @@ public class ConsoleGameRenderer implements Handler {
 
     @SneakyThrows(InterruptedException.class)
     public void handleInternal() {
-        final char[][] buffer = new char[map.getHeight()][map.getWidth()];
-        fillBufferWithEmptyChars(buffer);
-        fillBufferWithMap(buffer);
-        printBuffer(buffer);
+        try {
+            ConsoleUtils.clear();
+        } catch (IOException e) {
+            logger.error("Exception when clearing the console", e);
+        }
+        final char[][] buffer = new char[displayHeight][displayWidth];
+        try {
+            fillBufferWithMap(buffer);
+            printBuffer(buffer);
+        } catch (Exception e) {
+            logger.error("Exception when printing the buffer", e);
+        }
         System.out.println();
         Thread.sleep(1000);
     }
 
-    private void fillBufferWithEmptyChars(char[][] buffer) {
-        for (int i = yOffset; i < displayHeight + yOffset; ++i) {
-            for (int j = xOffset; j < displayWidth + xOffset; ++j) {
-                buffer[i][j] = 'O';
+    private void fillBufferWithMap(char[][] buffer) {
+        for (int i = 0; i < buffer.length; ++i) {
+            for (int j = 0; j < buffer[i].length; ++j) {
+                addObject(buffer, j, i, map.getObjectMap()[i + yOffset][j + xOffset]);
             }
         }
-    }
-
-    private void fillBufferWithMap(char[][] buffer) {
-        map.getObjects().forEach(object -> addObject(buffer, object));
     }
 
     private void printBuffer(char[][] buffer) {
@@ -77,9 +83,7 @@ public class ConsoleGameRenderer implements Handler {
         }
     }
 
-    private void addObject(char[][] buffer, ConsoleGameObject object) {
-        int x = object.getCoords().x();
-        int y = object.getCoords().y();
+    private void addObject(char[][] buffer, int x, int y, GameObject object) {
         buffer[y][x] = object.getConsoleChar();
     }
 }
