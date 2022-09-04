@@ -71,7 +71,7 @@ public class GameRenderer implements Handler {
             logger.error("Exception when printing the buffer", e);
         }
         System.out.println();
-        Thread.sleep(1000);
+        Thread.sleep(500);
     }
 
     private void fillBufferWithMap(char[][] buffer) {
@@ -79,6 +79,9 @@ public class GameRenderer implements Handler {
             for (int j = 0; j < buffer[i].length; ++j) {
                 addChar(buffer, j, i, map.getObjectMap()[i + yOffset][j + xOffset]);
             }
+        }
+        for (var character : map.getCharacterList()) {
+            addChar(buffer, character);
         }
     }
 
@@ -89,6 +92,10 @@ public class GameRenderer implements Handler {
             }
             output.println();
         }
+    }
+
+    private void addChar(char[][] buffer, GameObject object) {
+        addChar(buffer, object.getCoords().getX(), object.getCoords().getY(), object);
     }
 
     private void addChar(char[][] buffer, int x, int y, GameObject object) {

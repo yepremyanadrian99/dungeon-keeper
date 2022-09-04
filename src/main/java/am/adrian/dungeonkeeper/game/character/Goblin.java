@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 @Getter
@@ -60,5 +61,10 @@ public class Goblin implements GameCharacter, Destroyable, Walks, Swims, Emotion
             case RIGHT -> coords.incX();
             default -> throw new RuntimeException("Unknown direction");
         }
+    }
+
+    @Override
+    public boolean collides(@NotNull GameObject gameObject) {
+        return false;
     }
 }

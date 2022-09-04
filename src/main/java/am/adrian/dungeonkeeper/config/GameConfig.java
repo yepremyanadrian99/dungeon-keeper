@@ -9,10 +9,7 @@ import am.adrian.dungeonkeeper.game.GameStateService;
 import am.adrian.dungeonkeeper.game.MoveValidator;
 import am.adrian.dungeonkeeper.game.character.Goblin;
 import am.adrian.dungeonkeeper.game.object.Impenetrable;
-import am.adrian.dungeonkeeper.helper.ObjectGenerator;
 import am.adrian.dungeonkeeper.renderer.GameRenderer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,10 +22,10 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static am.adrian.dungeonkeeper.helper.ObjectGenerator.betweenPoints;
+
 @Configuration
 public class GameConfig {
-
-    private static final Logger logger = LogManager.getLogger(GameConfig.class);
 
     @Autowired
     private GameMap map;
@@ -72,7 +69,7 @@ public class GameConfig {
                      ExecutorService handlerExecutor,
                      GameController gameController,
                      GameRenderer gameRenderer) {
-        final Game game = new Game(stateService, handlerExecutor);
+        final var game = new Game(stateService, handlerExecutor);
         game.registerHandler(gameController);
         game.registerHandler(gameRenderer);
         return game;
@@ -82,17 +79,17 @@ public class GameConfig {
     public void initObjects() {
         final int width = map.getWidth();
         final int height = map.getHeight();
-        map.addObjects(ObjectGenerator.betweenPoints(new ImmutableCoords(0, 0), new ImmutableCoords(width - 1, 0), Impenetrable::new));
-        map.addObjects(ObjectGenerator.betweenPoints(new ImmutableCoords(0, 0), new ImmutableCoords(0, height - 1), Impenetrable::new));
-        map.addObjects(ObjectGenerator.betweenPoints(0, height - 1, width - 1, height - 1, Impenetrable::new));
-        map.addObjects(ObjectGenerator.betweenPoints(width - 1, 0, width - 1, height - 1, Impenetrable::new));
+        map.addObjects(betweenPoints(new ImmutableCoords(0, 0), new ImmutableCoords(width - 1, 0), Impenetrable::new));
+        map.addObjects(betweenPoints(new ImmutableCoords(0, 0), new ImmutableCoords(0, height - 1), Impenetrable::new));
+        map.addObjects(betweenPoints(0, height - 1, width - 1, height - 1, Impenetrable::new));
+        map.addObjects(betweenPoints(width - 1, 0, width - 1, height - 1, Impenetrable::new));
     }
 
     @PostConstruct
     public void initCharacters() {
-        final Goblin goblin = new Goblin(new Health(100), moveValidator);
+        final var goblin = new Goblin(new Health(100), moveValidator);
         goblin.getCoords().setX(10);
         goblin.getCoords().setY(4);
-        map.addObject(goblin);
+        map.addCharacter(goblin);
     }
 }

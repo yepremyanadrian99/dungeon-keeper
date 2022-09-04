@@ -1,8 +1,10 @@
 package am.adrian.dungeonkeeper.game.object;
 
 import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
+import am.adrian.dungeonkeeper.common.object.GameObject;
 import am.adrian.dungeonkeeper.common.object.wall.Wall;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public class Earth implements Wall {
@@ -21,5 +23,10 @@ public class Earth implements Wall {
     @Override
     public char getConsoleChar() {
         return 'O';
+    }
+
+    @Override
+    public boolean collides(@NotNull GameObject gameObject) {
+        return true;
     }
 }

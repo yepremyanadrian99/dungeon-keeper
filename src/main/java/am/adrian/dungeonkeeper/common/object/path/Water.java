@@ -1,4 +1,6 @@
 package am.adrian.dungeonkeeper.common.object.path;
 
-public interface Water {
+import am.adrian.dungeonkeeper.common.object.GameObject;
+
+public interface Water extends GameObject {
 }
