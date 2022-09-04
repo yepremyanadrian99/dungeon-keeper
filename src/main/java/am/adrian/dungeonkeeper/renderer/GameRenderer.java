@@ -1,7 +1,10 @@
 package am.adrian.dungeonkeeper.renderer;
 
+import am.adrian.dungeonkeeper.common.constant.RendererCharType;
 import am.adrian.dungeonkeeper.common.handler.Handler;
+import am.adrian.dungeonkeeper.common.object.Emotional;
 import am.adrian.dungeonkeeper.common.object.GameObject;
+import am.adrian.dungeonkeeper.common.object.Levelable;
 import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
 import am.adrian.dungeonkeeper.helper.ConsoleUtils;
@@ -27,14 +30,18 @@ public class GameRenderer implements Handler {
     private final GameMap map;
     private final PrintStream output;
 
+    private RendererCharType charToPrint = RendererCharType.OBJECT;
+
     @Value("#{T(Math).min(${display.width}, gameMap.width)}")
     private int displayWidth;
+
     @Value("#{T(Math).min(${display.height}, gameMap.height)}")
     private int displayHeight;
 
     @Getter
     @Setter
     private int xOffset = 0;
+
     @Getter
     @Setter
     private int yOffset = 0;
@@ -59,6 +66,7 @@ public class GameRenderer implements Handler {
         try {
             fillBufferWithMap(buffer);
             printBuffer(buffer);
+            updateCharToPrint();
         } catch (Exception e) {
             logger.error("Exception when printing the buffer", e);
         }
@@ -69,7 +77,7 @@ public class GameRenderer implements Handler {
     private void fillBufferWithMap(char[][] buffer) {
         for (int i = 0; i < buffer.length; ++i) {
             for (int j = 0; j < buffer[i].length; ++j) {
-                addObject(buffer, j, i, map.getObjectMap()[i + yOffset][j + xOffset]);
+                addChar(buffer, j, i, map.getObjectMap()[i + yOffset][j + xOffset]);
             }
         }
     }
@@ -83,7 +91,23 @@ public class GameRenderer implements Handler {
         }
     }
 
-    private void addObject(char[][] buffer, int x, int y, GameObject object) {
-        buffer[y][x] = object.getConsoleChar();
+    private void addChar(char[][] buffer, int x, int y, GameObject object) {
+        final char character;
+        if (charToPrint == RendererCharType.LEVEL && object instanceof Levelable levelable) {
+            character = (char) ('0' + levelable.getLevel());
+        } else if (charToPrint == RendererCharType.MOOD && object instanceof Emotional emotional) {
+            character = emotional.getMood().getSymbol();
+        } else {
+            character = object.getConsoleChar();
+        }
+        buffer[y][x] = character;
+    }
+
+    private void updateCharToPrint() {
+        charToPrint = switch (charToPrint) {
+            case OBJECT -> RendererCharType.LEVEL;
+            case LEVEL -> RendererCharType.MOOD;
+            case MOOD -> RendererCharType.OBJECT;
+        };
     }
 }

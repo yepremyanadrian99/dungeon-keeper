@@ -3,19 +3,18 @@ package am.adrian.dungeonkeeper.game.character;
 import am.adrian.dungeonkeeper.common.constant.Direction;
 import am.adrian.dungeonkeeper.common.coords.MutableCoords;
 import am.adrian.dungeonkeeper.common.health.Health;
-import am.adrian.dungeonkeeper.common.object.Destroyable;
-import am.adrian.dungeonkeeper.common.object.GameCharacter;
-import am.adrian.dungeonkeeper.common.object.Swims;
-import am.adrian.dungeonkeeper.common.object.Walks;
+import am.adrian.dungeonkeeper.common.object.*;
 import am.adrian.dungeonkeeper.game.MoveValidator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @RequiredArgsConstructor
 @Getter
-public class Goblin implements GameCharacter, Destroyable, Walks, Swims {
+@Setter
+public class Goblin implements GameCharacter, Destroyable, Walks, Swims, Emotional, Levelable {
 
     private static final char CONSOLE_CHAR = 'G';
 
@@ -24,6 +23,9 @@ public class Goblin implements GameCharacter, Destroyable, Walks, Swims {
     private final MutableCoords coords = new MutableCoords();
     private final Health health;
     private final MoveValidator moveValidator;
+
+    private int level = 0;
+    private Mood mood = Mood.HAPPY;
 
     @Override
     public char getConsoleChar() {
@@ -43,6 +45,11 @@ public class Goblin implements GameCharacter, Destroyable, Walks, Swims {
     @Override
     public void swim(Direction dir) {
         move(dir);
+    }
+
+    @Override
+    public void levelUp() {
+        ++level;
     }
 
     private void move(Direction dir) {
