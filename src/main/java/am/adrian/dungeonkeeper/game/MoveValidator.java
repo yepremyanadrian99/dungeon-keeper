@@ -11,28 +11,28 @@ import org.springframework.stereotype.Component;
 @Component
 public record MoveValidator(GameMap map) {
 
-    public boolean validateWalk(GameCharacter character, Direction dir) {
+    public boolean validateWalk(Creature character, Direction dir) {
         if (!(character instanceof Walks)) {
             return false;
         }
         return isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) instanceof Path;
     }
 
-    public boolean validateSwim(GameCharacter character, Direction dir) {
+    public boolean validateSwim(Creature character, Direction dir) {
         if (!(character instanceof Swims)) {
             return false;
         }
         return isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) instanceof Water;
     }
 
-    public boolean validateFly(GameCharacter character, Direction dir) {
+    public boolean validateFly(Creature character, Direction dir) {
         if (!(character instanceof Flies)) {
             return false;
         }
         return isMoveWithinMap(character, dir) && !(objectToMoveTo(character.getCoords(), dir) instanceof Wall);
     }
 
-    private boolean isMoveWithinMap(GameCharacter character, Direction dir) {
+    private boolean isMoveWithinMap(Creature character, Direction dir) {
         return switch (dir) {
             case UP -> character.getCoords().getY() > 0;
             case DOWN -> character.getCoords().getY() < map.getHeight() - 1;

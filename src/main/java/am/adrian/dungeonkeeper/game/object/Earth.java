@@ -26,6 +26,11 @@ public class Earth implements Wall {
     }
 
     @Override
+    public String getTexture() {
+        return "earth.png";
+    }
+
+    @Override
     public boolean collides(@NotNull GameObject gameObject) {
         return true;
     }

@@ -26,6 +26,11 @@ public class Impenetrable implements Wall {
     }
 
     @Override
+    public String getTexture() {
+        return "impenetrable.png";
+    }
+
+    @Override
     public boolean collides(@NotNull GameObject gameObject) {
         return true;
     }

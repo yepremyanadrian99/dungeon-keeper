@@ -9,13 +9,16 @@ import am.adrian.dungeonkeeper.game.GameStateService;
 import am.adrian.dungeonkeeper.game.MoveValidator;
 import am.adrian.dungeonkeeper.game.character.Goblin;
 import am.adrian.dungeonkeeper.game.object.Impenetrable;
-import am.adrian.dungeonkeeper.renderer.GameRenderer;
+import am.adrian.dungeonkeeper.helper.ResourceHelper;
+import am.adrian.dungeonkeeper.renderer.GameRenderer2D;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
+import javax.swing.*;
+import java.awt.*;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -59,16 +62,40 @@ public class GameConfig {
     }
 
     @Bean
-    public GameMap gameMap(@Value("${gameMap.width}") int width,
-                           @Value("${gameMap.height}") int height) {
+    public GameMap gameMap(
+            @Value("${gameMap.width}") int width,
+            @Value("${gameMap.height}") int height
+    ) {
         return new GameMap(width, height);
     }
 
     @Bean
-    public Game game(GameStateService stateService,
-                     ExecutorService handlerExecutor,
-                     GameController gameController,
-                     GameRenderer gameRenderer) {
+    public GameRenderer2D gameRenderer(
+            GameStateService stateService,
+            GameMap gameMap,
+            ResourceHelper resourceHelper,
+            @Value("${window.width}") int width,
+            @Value("${window.height}") int height,
+            @Value("${window.offsetX}") int offsetX,
+            @Value("${window.offsetY}") int offsetY,
+            @Value("${window.cell.size}") int cellSize
+    ) {
+        final var gameRenderer = new GameRenderer2D(stateService, gameMap, resourceHelper, offsetX, offsetY, cellSize);
+        gameRenderer.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        gameRenderer.setSize(width, height);
+        gameRenderer.setVisible(true);
+        gameRenderer.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        gameRenderer.setBackground(Color.BLACK);
+        return gameRenderer;
+    }
+
+    @Bean
+    public Game game(
+            GameStateService stateService,
+            ExecutorService handlerExecutor,
+            GameController gameController,
+            GameRenderer2D gameRenderer
+    ) {
         final var game = new Game(stateService, handlerExecutor);
         game.registerHandler(gameController);
         game.registerHandler(gameRenderer);
@@ -90,6 +117,6 @@ public class GameConfig {
         final var goblin = new Goblin(new Health(100), moveValidator);
         goblin.getCoords().setX(10);
         goblin.getCoords().setY(4);
-        map.addCharacter(goblin);
+        map.addCreature(goblin);
     }
 }

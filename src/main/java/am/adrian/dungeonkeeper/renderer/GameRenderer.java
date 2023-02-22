@@ -80,7 +80,7 @@ public class GameRenderer implements Handler {
                 addChar(buffer, j, i, map.getObjectMap()[i + yOffset][j + xOffset]);
             }
         }
-        for (var character : map.getCharacterList()) {
+        for (var character : map.getCreatures()) {
             addChar(buffer, character);
         }
     }

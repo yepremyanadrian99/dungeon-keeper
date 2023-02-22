@@ -1,7 +1,8 @@
 package am.adrian.dungeonkeeper.game;
 
-import am.adrian.dungeonkeeper.common.object.GameCharacter;
+import am.adrian.dungeonkeeper.common.object.Creature;
 import am.adrian.dungeonkeeper.common.object.GameObject;
+import am.adrian.dungeonkeeper.game.object.UnclaimedPath;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,16 +21,16 @@ public class GameMap {
     private final int width;
     private final int height;
     private final GameObject[][] objectMap;
-    private final List<GameCharacter> characterList;
+    private final List<Creature> creatures;
 
     public GameMap(int width, int height) {
         this.width = width;
         this.height = height;
         this.objectMap = new GameObject[height][width];
-        this.characterList = new ArrayList<>();
+        this.creatures = new ArrayList<>();
         for (int i = 0; i < height; ++i) {
             for (int j = 0; j < width; ++j) {
-                objectMap[i][j] = GameObject.EMPTY_SPACE;
+                objectMap[i][j] = new UnclaimedPath(j, i);
             }
         }
     }
@@ -56,33 +57,33 @@ public class GameMap {
     }
 
     public void removeObject(int x, int y) {
-        objectMap[y][x] = GameObject.EMPTY_SPACE;
+        objectMap[y][x] = new UnclaimedPath(x, y);
     }
 
-    public void addCharacter(GameCharacter character) {
-        if (character.getCoords() == null) {
-            logger.debug("Not adding character as its coords are null");
+    public void addCreature(Creature creature) {
+        if (creature.getCoords() == null) {
+            logger.debug("Not adding creature as its coords are null");
             return;
         }
 
-        final var x = character.getCoords().getX();
-        final var y = character.getCoords().getY();
+        final var x = creature.getCoords().getX();
+        final var y = creature.getCoords().getY();
         final var object = objectMap[y][x];
 
-        if (object != GameObject.EMPTY_SPACE && objectsCollide(object, character)) {
-            logger.debug("Not adding character as its colliding with another object");
+        if (!(object instanceof UnclaimedPath) && objectsCollide(object, creature)) {
+            logger.debug("Not adding creature as its colliding with another object");
             return;
         }
 
-        logger.debug("Adding character with x: {} and y: {}", x, y);
-        characterList.add(character);
+        logger.debug("Adding creature with x: {} and y: {}", x, y);
+        creatures.add(creature);
     }
 
-    public void addCharacters(Collection<? extends GameCharacter> charactersToAdd) {
-        charactersToAdd.forEach(this::addCharacter);
+    public void addCreature(Collection<? extends Creature> creaturesToAdd) {
+        creaturesToAdd.forEach(this::addCreature);
     }
 
-    public void removeCharacter(GameCharacter character) {
-        characterList.remove(character);
+    public void removeCreature(Creature creature) {
+        creatures.remove(creature);
     }
 }

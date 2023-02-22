@@ -15,9 +15,10 @@ import org.jetbrains.annotations.NotNull;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class Goblin implements GameCharacter, Destroyable, Walks, Swims, Emotional, Levelable {
+public class Goblin implements Creature, Destroyable, Walks, Swims, Emotional, Levelable {
 
     private static final char CONSOLE_CHAR = 'G';
+    private static final String TEXTURE = "goblin.png";
 
     private static final Logger logger = LogManager.getLogger(Goblin.class);
 
@@ -31,6 +32,11 @@ public class Goblin implements GameCharacter, Destroyable, Walks, Swims, Emotion
     @Override
     public char getConsoleChar() {
         return CONSOLE_CHAR;
+    }
+
+    @Override
+    public String getTexture() {
+        return TEXTURE;
     }
 
     @Override
