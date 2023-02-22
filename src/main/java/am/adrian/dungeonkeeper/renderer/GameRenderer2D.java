@@ -58,13 +58,6 @@ public class GameRenderer2D extends JFrame implements Handler {
                         cellSize,
                         null
                 );
-//                g.setColor(gameObject.getColor());
-//                g.fillRect(
-//                        offsetX + cellSize * gameObject.getCoords().getX(),
-//                        offsetY + cellSize * gameObject.getCoords().getY(),
-//                        cellSize,
-//                        cellSize
-//                );
             }
         }
         for (int i = 0; i < map.getHeight(); ++i) {

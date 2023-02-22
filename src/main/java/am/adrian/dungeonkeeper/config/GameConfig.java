@@ -2,7 +2,6 @@ package am.adrian.dungeonkeeper.config;
 
 import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
 import am.adrian.dungeonkeeper.common.health.Health;
-import am.adrian.dungeonkeeper.controller.GameController;
 import am.adrian.dungeonkeeper.game.Game;
 import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
@@ -93,11 +92,9 @@ public class GameConfig {
     public Game game(
             GameStateService stateService,
             ExecutorService handlerExecutor,
-            GameController gameController,
             GameRenderer2D gameRenderer
     ) {
         final var game = new Game(stateService, handlerExecutor);
-        game.registerHandler(gameController);
         game.registerHandler(gameRenderer);
         return game;
     }
