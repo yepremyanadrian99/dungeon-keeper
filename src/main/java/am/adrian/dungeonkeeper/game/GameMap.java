@@ -18,7 +18,9 @@ public class GameMap {
 
     private static final Logger logger = LogManager.getLogger(GameMap.class);
 
+    @Getter
     private final int width;
+    @Getter
     private final int height;
     private final GameObject[][] objectMap;
     private final List<Creature> creatures;

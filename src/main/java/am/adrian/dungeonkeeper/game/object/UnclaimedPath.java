@@ -22,11 +22,6 @@ public class UnclaimedPath implements Path {
     }
 
     @Override
-    public char getConsoleChar() {
-        return ' ';
-    }
-
-    @Override
     public String getTexture() {
         return "dirt.jpg";
     }

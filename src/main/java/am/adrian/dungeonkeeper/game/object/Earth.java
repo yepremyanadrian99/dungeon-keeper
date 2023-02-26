@@ -21,11 +21,6 @@ public class Earth implements Wall {
     }
 
     @Override
-    public char getConsoleChar() {
-        return 'O';
-    }
-
-    @Override
     public String getTexture() {
         return "earth.png";
     }

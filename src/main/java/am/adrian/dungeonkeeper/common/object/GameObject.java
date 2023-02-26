@@ -6,7 +6,5 @@ public interface GameObject extends Collidable {
 
     Coords getCoords();
 
-    char getConsoleChar();
-
     String getTexture();
 }

@@ -1,9 +1,13 @@
 package am.adrian.dungeonkeeper.renderer;
 
+import am.adrian.dungeonkeeper.common.constant.Direction;
+import am.adrian.dungeonkeeper.common.coords.Coords;
 import am.adrian.dungeonkeeper.common.handler.Handler;
 import am.adrian.dungeonkeeper.common.object.Creature;
+import am.adrian.dungeonkeeper.common.object.GameObject;
 import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
+import am.adrian.dungeonkeeper.game.character.Goblin;
 import am.adrian.dungeonkeeper.helper.ResourceHelper;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -12,7 +16,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+
+import static java.awt.event.KeyEvent.KEY_TYPED;
 
 @RequiredArgsConstructor
 public class GameRenderer2D extends JFrame implements Handler {
@@ -25,6 +32,7 @@ public class GameRenderer2D extends JFrame implements Handler {
     private final int offsetX;
     private final int offsetY;
     private final int cellSize;
+    private final boolean outlines;
 
     @Override
     public void handle() {
@@ -40,6 +48,29 @@ public class GameRenderer2D extends JFrame implements Handler {
     }
 
     @Override
+    protected void processKeyEvent(KeyEvent e) {
+        if (e.getID() != KEY_TYPED) {
+            return;
+        }
+        final var goblin = ((Goblin) map.getCreatures().get(0));
+        final var gameObject = creatureStandsOn(goblin.getCoords());
+        logger.info("Goblin is on: " + gameObject.getTexture());
+
+        if (e.getKeyChar() == 'w') {
+            goblin.walk(Direction.UP);
+        } else if (e.getKeyChar() == 's') {
+            goblin.walk(Direction.DOWN);
+        } else if (e.getKeyChar() == 'a') {
+            goblin.walk(Direction.LEFT);
+        } else if (e.getKeyChar() == 'd') {
+            goblin.walk(Direction.RIGHT);
+        } else {
+            return;
+        }
+        repaint();
+    }
+
+    @Override
     public void paint(Graphics g) {
         final var bufferedMap = new BufferedImage(
                 cellSize * map.getWidth(),
@@ -49,7 +80,9 @@ public class GameRenderer2D extends JFrame implements Handler {
         final Graphics2D g2d = bufferedMap.createGraphics();
         drawLand(g2d);
         drawCreatures(g2d);
-        drawOutlines(g2d);
+        if (outlines) {
+            drawOutlines(g2d);
+        }
 
         final Graphics2D g2dComponent = (Graphics2D) g;
         g2dComponent.drawImage(bufferedMap, null, offsetX, offsetY);
@@ -77,10 +110,10 @@ public class GameRenderer2D extends JFrame implements Handler {
             final var image = resourceHelper.loadBufferedImage(creature.getTexture());
             g2d.drawImage(
                     image,
-                    creature.getCoords().getX() * cellSize,
-                    creature.getCoords().getY() * cellSize,
-                    cellSize,
-                    cellSize,
+                    creature.getCoords().getX(),
+                    creature.getCoords().getY(),
+                    creature.getWidth(),
+                    creature.getHeight(),
                     null
             );
         }
@@ -94,5 +127,9 @@ public class GameRenderer2D extends JFrame implements Handler {
                 g2d.drawLine(0, i * cellSize, cellSize * map.getWidth(), i * cellSize);
             }
         }
+    }
+
+    private GameObject creatureStandsOn(Coords coords) {
+        return map.getObjectMap()[coords.getY() / cellSize][coords.getX() / cellSize];
     }
 }

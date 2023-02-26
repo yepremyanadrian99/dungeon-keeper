@@ -21,11 +21,6 @@ public class Impenetrable implements Wall {
     }
 
     @Override
-    public char getConsoleChar() {
-        return '#';
-    }
-
-    @Override
     public String getTexture() {
         return "impenetrable.png";
     }

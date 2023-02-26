@@ -18,19 +18,11 @@ public class MutableCoords implements Coords {
         return y;
     }
 
-    public void incX() {
-        ++x;
+    public void incX(int delta) {
+        x += delta;
     }
 
-    public void incY() {
-        ++y;
-    }
-
-    public void decX() {
-        --x;
-    }
-
-    public void decY() {
-        --y;
+    public void incY(int delta) {
+        y += delta;
     }
 }

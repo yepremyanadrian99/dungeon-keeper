@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 @Setter
 public class Goblin implements Creature, Destroyable, Walks, Swims, Emotional, Levelable {
 
-    private static final char CONSOLE_CHAR = 'G';
     private static final String TEXTURE = "goblin.png";
 
     private static final Logger logger = LogManager.getLogger(Goblin.class);
@@ -25,18 +24,25 @@ public class Goblin implements Creature, Destroyable, Walks, Swims, Emotional, L
     private final MutableCoords coords = new MutableCoords();
     private final Health health;
     private final MoveValidator moveValidator;
+    private final int width;
+    private final int height;
 
-    private int level = 0;
+    private int level = 1;
     private Mood mood = Mood.HAPPY;
-
-    @Override
-    public char getConsoleChar() {
-        return CONSOLE_CHAR;
-    }
 
     @Override
     public String getTexture() {
         return TEXTURE;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
     }
 
     @Override
@@ -46,12 +52,22 @@ public class Goblin implements Creature, Destroyable, Walks, Swims, Emotional, L
 
     @Override
     public void walk(Direction dir) {
-        move(dir);
+        move(dir, walkDelta());
+    }
+
+    @Override
+    public int walkDelta() {
+        return 5;
     }
 
     @Override
     public void swim(Direction dir) {
-        move(dir);
+        move(dir, swimDelta());
+    }
+
+    @Override
+    public int swimDelta() {
+        return 1;
     }
 
     @Override
@@ -59,12 +75,12 @@ public class Goblin implements Creature, Destroyable, Walks, Swims, Emotional, L
         ++level;
     }
 
-    private void move(Direction dir) {
+    public void move(Direction dir, int delta) {
         switch (dir) {
-            case UP -> coords.decY();
-            case DOWN -> coords.incY();
-            case LEFT -> coords.decX();
-            case RIGHT -> coords.incX();
+            case UP -> coords.incY(-delta);
+            case DOWN -> coords.incY(delta);
+            case LEFT -> coords.incX(-delta);
+            case RIGHT -> coords.incX(delta);
             default -> throw new RuntimeException("Unknown direction");
         }
     }
