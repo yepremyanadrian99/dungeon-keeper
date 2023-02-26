@@ -6,16 +6,13 @@ import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
 import am.adrian.dungeonkeeper.helper.ResourceHelper;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 @RequiredArgsConstructor
 public class GameRenderer2D extends JFrame implements Handler {
@@ -43,41 +40,59 @@ public class GameRenderer2D extends JFrame implements Handler {
     }
 
     @Override
-    @SneakyThrows(IOException.class)
     public void paint(Graphics g) {
+        final var bufferedMap = new BufferedImage(
+                cellSize * map.getWidth(),
+                cellSize * map.getHeight(),
+                BufferedImage.TYPE_INT_RGB
+        );
+        final Graphics2D g2d = bufferedMap.createGraphics();
+        drawLand(g2d);
+        drawCreatures(g2d);
+        drawOutlines(g2d);
+
+        final Graphics2D g2dComponent = (Graphics2D) g;
+        g2dComponent.drawImage(bufferedMap, null, offsetX, offsetY);
+    }
+
+    private void drawLand(Graphics2D g2d) {
         for (int i = 0; i < map.getObjectMap().length; ++i) {
             for (int j = 0; j < map.getObjectMap()[i].length; ++j) {
                 final var gameObject = map.getObjectMap()[i][j];
-                final var file = resourceHelper.loadTexture(gameObject.getTexture());
-                final BufferedImage image = ImageIO.read(file);
-                g.drawImage(
+                final var image = resourceHelper.loadBufferedImage(gameObject.getTexture());
+                g2d.drawImage(
                         image,
-                        offsetX + cellSize * gameObject.getCoords().getX(),
-                        offsetY + cellSize * gameObject.getCoords().getY(),
+                        cellSize * gameObject.getCoords().getX(),
+                        cellSize * gameObject.getCoords().getY(),
                         cellSize,
                         cellSize,
                         null
                 );
             }
         }
-        for (int i = 0; i < map.getHeight(); ++i) {
-            for (int j = 0; j < map.getWidth(); ++j) {
-                g.setColor(Color.white);
-                g.drawLine(offsetX + j * cellSize, offsetY, offsetX + j * cellSize, offsetY + map.getHeight() * cellSize);
-                g.drawLine(offsetX, offsetY + i * cellSize, offsetX + cellSize * map.getWidth(), offsetY + i * cellSize);
-            }
-        }
+    }
+
+    private void drawCreatures(Graphics2D g2d) {
         for (Creature creature : map.getCreatures()) {
-            final var file = resourceHelper.loadTexture(creature.getTexture());
-            final BufferedImage image = ImageIO.read(file);
-            g.drawImage(
+            final var image = resourceHelper.loadBufferedImage(creature.getTexture());
+            g2d.drawImage(
                     image,
-                    offsetX + creature.getCoords().getX() * cellSize,
-                    offsetY + creature.getCoords().getY() * cellSize,
+                    creature.getCoords().getX() * cellSize,
+                    creature.getCoords().getY() * cellSize,
                     cellSize,
                     cellSize,
                     null
             );
+        }
+    }
+
+    private void drawOutlines(Graphics2D g2d) {
+        for (int i = 0; i < map.getHeight(); ++i) {
+            for (int j = 0; j < map.getWidth(); ++j) {
+                g2d.setColor(Color.white);
+                g2d.drawLine(j * cellSize, 0, j * cellSize, map.getHeight() * cellSize);
+                g2d.drawLine(0, i * cellSize, cellSize * map.getWidth(), i * cellSize);
+            }
         }
     }
 }

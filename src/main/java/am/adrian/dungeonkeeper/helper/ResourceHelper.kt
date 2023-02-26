@@ -2,16 +2,18 @@ package am.adrian.dungeonkeeper.helper
 
 import org.springframework.core.io.ResourceLoader
 import org.springframework.stereotype.Component
+import java.awt.image.BufferedImage
 import java.io.File
+import javax.imageio.ImageIO
 
 @Component
 class ResourceHelper(private val resourceLoader: ResourceLoader) {
 
-    val cachedTextures: MutableMap<String, File> = mutableMapOf()
+    private val cachedImages: MutableMap<String, BufferedImage> = mutableMapOf()
 
-    fun loadTexture(texture: String): File {
-        return cachedTextures.computeIfAbsent(texture) {
-            resourceLoader.getResource("classpath:icons/$it").file
-        }
-    }
+    fun loadBufferedImage(texture: String): BufferedImage =
+        cachedImages.computeIfAbsent(texture) { ImageIO.read(loadTexture(it)) }
+
+    private fun loadTexture(texture: String): File =
+        resourceLoader.getResource("classpath:icons/$texture").file
 }
