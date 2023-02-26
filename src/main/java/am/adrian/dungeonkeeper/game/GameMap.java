@@ -18,9 +18,7 @@ public class GameMap {
 
     private static final Logger logger = LogManager.getLogger(GameMap.class);
 
-    @Getter
     private final int width;
-    @Getter
     private final int height;
     private final GameObject[][] objectMap;
     private final List<Creature> creatures;
@@ -70,6 +68,7 @@ public class GameMap {
 
         final var x = creature.getCoords().getX();
         final var y = creature.getCoords().getY();
+
         final var object = objectMap[y][x];
 
         if (!(object instanceof UnclaimedPath) && objectsCollide(object, creature)) {

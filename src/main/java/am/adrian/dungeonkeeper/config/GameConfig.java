@@ -3,6 +3,7 @@ package am.adrian.dungeonkeeper.config;
 import am.adrian.dungeonkeeper.game.Game;
 import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
+import am.adrian.dungeonkeeper.game.MoveValidator;
 import am.adrian.dungeonkeeper.helper.ResourceHelper;
 import am.adrian.dungeonkeeper.renderer.GameRenderer2D;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,7 @@ public class GameConfig {
     public GameRenderer2D gameRenderer(
             GameStateService stateService,
             GameMap gameMap,
+            MoveValidator moveValidator,
             ResourceHelper resourceHelper,
             @Value("${window.width}") int width,
             @Value("${window.height}") int height,
@@ -44,8 +46,10 @@ public class GameConfig {
             @Value("${window.cell.size}") int cellSize,
             @Value("${window.map.outlines}") boolean outlines
     ) {
-        final var gameRenderer =
-                new GameRenderer2D(stateService, gameMap, resourceHelper, offsetX, offsetY, cellSize, outlines);
+        final var gameRenderer = new GameRenderer2D(
+                stateService, gameMap, moveValidator, resourceHelper,
+                offsetX, offsetY, cellSize, outlines
+        );
         gameRenderer.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         gameRenderer.setSize(width, height);
         gameRenderer.setVisible(true);

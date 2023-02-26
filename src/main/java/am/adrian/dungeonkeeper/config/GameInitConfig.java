@@ -3,7 +3,6 @@ package am.adrian.dungeonkeeper.config;
 import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
 import am.adrian.dungeonkeeper.common.health.Health;
 import am.adrian.dungeonkeeper.game.GameMap;
-import am.adrian.dungeonkeeper.game.MoveValidator;
 import am.adrian.dungeonkeeper.game.character.Goblin;
 import am.adrian.dungeonkeeper.game.object.Impenetrable;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import static am.adrian.dungeonkeeper.helper.ObjectGenerator.betweenPoints;
 public class GameInitConfig {
 
     private final GameMap map;
-    private final MoveValidator moveValidator;
 
     @Value("${creatures.goblin.width}")
     private int goblinWidth;
@@ -42,7 +40,7 @@ public class GameInitConfig {
 
     @PostConstruct
     public void initCharacters() {
-        final var goblin = new Goblin(new Health(goblinMaxHealth), moveValidator, goblinWidth, goblinHeight);
+        final var goblin = new Goblin(new Health(goblinMaxHealth), goblinWidth, goblinHeight);
         goblin.getCoords().setX(10);
         goblin.getCoords().setY(4);
         map.addCreature(goblin);

@@ -4,7 +4,6 @@ import am.adrian.dungeonkeeper.common.constant.Direction;
 import am.adrian.dungeonkeeper.common.coords.MutableCoords;
 import am.adrian.dungeonkeeper.common.health.Health;
 import am.adrian.dungeonkeeper.common.object.*;
-import am.adrian.dungeonkeeper.game.MoveValidator;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,6 @@ public class Goblin implements Creature, Destroyable, Walks, Swims, Emotional, L
 
     private final MutableCoords coords = new MutableCoords();
     private final Health health;
-    private final MoveValidator moveValidator;
     private final int width;
     private final int height;
 

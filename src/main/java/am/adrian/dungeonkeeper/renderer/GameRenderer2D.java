@@ -7,6 +7,7 @@ import am.adrian.dungeonkeeper.common.object.Creature;
 import am.adrian.dungeonkeeper.common.object.GameObject;
 import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
+import am.adrian.dungeonkeeper.game.MoveValidator;
 import am.adrian.dungeonkeeper.game.character.Goblin;
 import am.adrian.dungeonkeeper.helper.ResourceHelper;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class GameRenderer2D extends JFrame implements Handler {
 
     private final GameStateService stateService;
     private final GameMap map;
+    private final MoveValidator moveValidator;
     private final ResourceHelper resourceHelper;
     private final int offsetX;
     private final int offsetY;
