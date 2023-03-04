@@ -22,9 +22,9 @@ import java.awt.image.BufferedImage;
 import static java.awt.event.KeyEvent.KEY_TYPED;
 
 @RequiredArgsConstructor
-public class GameRenderer2D extends JFrame {
+public class Game extends JFrame {
 
-    private static final Logger logger = LogManager.getLogger(GameRenderer2D.class);
+    private static final Logger logger = LogManager.getLogger(Game.class);
 
     private final GameStateService stateService;
     private final GameMap map;
@@ -35,9 +35,9 @@ public class GameRenderer2D extends JFrame {
     private final int cellSize;
     private final boolean outlines;
 
-    @Scheduled(fixedDelay = 1L)
+    @Scheduled(fixedRate = 1L)
     public void update() {
-        if (!stateService.isFinished()) {
+        if (!stateService.isRunning()) {
             repaint();
         }
     }
@@ -59,10 +59,7 @@ public class GameRenderer2D extends JFrame {
             goblin.walk(Direction.LEFT);
         } else if (e.getKeyChar() == 'd') {
             goblin.walk(Direction.RIGHT);
-        } else {
-            return;
         }
-        repaint();
     }
 
     @Override

@@ -12,7 +12,7 @@ public class GameStateService {
         this.state = state;
     }
 
-    public synchronized boolean isFinished() {
-        return state == null || state == GameState.NOT_STARTED || state == GameState.FINISHED;
+    public synchronized boolean isRunning() {
+        return !(state == null || state == GameState.NOT_STARTED || state == GameState.FINISHED);
     }
 }

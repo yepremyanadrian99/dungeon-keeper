@@ -4,10 +4,11 @@ import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
 import am.adrian.dungeonkeeper.game.MoveValidator;
 import am.adrian.dungeonkeeper.helper.ResourceHelper;
-import am.adrian.dungeonkeeper.renderer.GameRenderer2D;
+import am.adrian.dungeonkeeper.renderer.Game;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Configuration
+@EnableScheduling
 public class GameConfig {
 
     // Should only be used for executing handlers.
@@ -33,7 +35,7 @@ public class GameConfig {
     }
 
     @Bean
-    public GameRenderer2D gameRenderer(
+    public Game gameRenderer(
             GameStateService stateService,
             GameMap gameMap,
             MoveValidator moveValidator,
@@ -45,7 +47,7 @@ public class GameConfig {
             @Value("${window.cell.size}") int cellSize,
             @Value("${window.map.outlines}") boolean outlines
     ) {
-        final var gameRenderer = new GameRenderer2D(
+        final var gameRenderer = new Game(
                 stateService, gameMap, moveValidator, resourceHelper,
                 offsetX, offsetY, cellSize, outlines
         );
