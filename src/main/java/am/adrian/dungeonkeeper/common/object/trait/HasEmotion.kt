@@ -1,6 +1,6 @@
-package am.adrian.dungeonkeeper.common.`object`
+package am.adrian.dungeonkeeper.common.`object`.trait
 
-interface Emotional {
+interface HasEmotion {
 
     fun getMood(): Mood
 

@@ -3,7 +3,9 @@ package am.adrian.dungeonkeeper.game.character;
 import am.adrian.dungeonkeeper.common.constant.Direction;
 import am.adrian.dungeonkeeper.common.coords.MutableCoords;
 import am.adrian.dungeonkeeper.common.health.Health;
-import am.adrian.dungeonkeeper.common.object.*;
+import am.adrian.dungeonkeeper.common.object.Creature;
+import am.adrian.dungeonkeeper.common.object.GameObject;
+import am.adrian.dungeonkeeper.common.object.trait.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 @RequiredArgsConstructor
 @Getter
 @Setter
-public class Goblin implements Creature, Destroyable, Walks, Swims, Emotional, Levelable {
+public class Goblin implements Creature, HasHealth, CanWalk, CanSwim, HasEmotion, CanLevel {
 
     private static final String TEXTURE = "goblin.png";
 
@@ -41,11 +43,6 @@ public class Goblin implements Creature, Destroyable, Walks, Swims, Emotional, L
     @Override
     public int getHeight() {
         return height;
-    }
-
-    @Override
-    public void destroyedAction() {
-        logger.debug("{} has been destroyed/killed.", this.getClass().getName());
     }
 
     @Override

@@ -1,6 +1,5 @@
 package am.adrian.dungeonkeeper.config;
 
-import am.adrian.dungeonkeeper.game.Game;
 import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
 import am.adrian.dungeonkeeper.game.MoveValidator;
@@ -56,16 +55,5 @@ public class GameConfig {
         gameRenderer.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         gameRenderer.setBackground(Color.BLACK);
         return gameRenderer;
-    }
-
-    @Bean
-    public Game game(
-            GameStateService stateService,
-            ExecutorService handlerExecutor,
-            GameRenderer2D gameRenderer
-    ) {
-        final var game = new Game(stateService, handlerExecutor);
-        game.registerHandler(gameRenderer);
-        return game;
     }
 }

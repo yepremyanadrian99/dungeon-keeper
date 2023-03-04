@@ -1,4 +1,4 @@
-package am.adrian.dungeonkeeper.game.object;
+package am.adrian.dungeonkeeper.game.tile;
 
 import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
 import am.adrian.dungeonkeeper.common.object.GameObject;

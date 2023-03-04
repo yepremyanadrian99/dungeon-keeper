@@ -2,7 +2,6 @@ package am.adrian.dungeonkeeper.renderer;
 
 import am.adrian.dungeonkeeper.common.constant.Direction;
 import am.adrian.dungeonkeeper.common.coords.Coords;
-import am.adrian.dungeonkeeper.common.handler.Handler;
 import am.adrian.dungeonkeeper.common.object.Creature;
 import am.adrian.dungeonkeeper.common.object.GameObject;
 import am.adrian.dungeonkeeper.game.GameMap;
@@ -23,7 +22,7 @@ import java.awt.image.BufferedImage;
 import static java.awt.event.KeyEvent.KEY_TYPED;
 
 @RequiredArgsConstructor
-public class GameRenderer2D extends JFrame implements Handler {
+public class GameRenderer2D extends JFrame {
 
     private static final Logger logger = LogManager.getLogger(GameRenderer2D.class);
 
@@ -35,12 +34,6 @@ public class GameRenderer2D extends JFrame implements Handler {
     private final int offsetY;
     private final int cellSize;
     private final boolean outlines;
-
-    @Override
-    public void handle() {
-        logger.debug("Handle method called");
-        logger.debug("Exiting handle method");
-    }
 
     @Scheduled(fixedDelay = 1L)
     public void update() {

@@ -4,7 +4,7 @@ import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
 import am.adrian.dungeonkeeper.common.health.Health;
 import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.character.Goblin;
-import am.adrian.dungeonkeeper.game.object.Impenetrable;
+import am.adrian.dungeonkeeper.game.tile.Impenetrable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

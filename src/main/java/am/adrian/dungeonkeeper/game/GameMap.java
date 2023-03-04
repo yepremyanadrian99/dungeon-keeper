@@ -2,7 +2,7 @@ package am.adrian.dungeonkeeper.game;
 
 import am.adrian.dungeonkeeper.common.object.Creature;
 import am.adrian.dungeonkeeper.common.object.GameObject;
-import am.adrian.dungeonkeeper.game.object.UnclaimedPath;
+import am.adrian.dungeonkeeper.game.tile.UnclaimedPath;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

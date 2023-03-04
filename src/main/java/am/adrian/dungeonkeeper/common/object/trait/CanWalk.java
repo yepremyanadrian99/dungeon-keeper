@@ -1,8 +1,8 @@
-package am.adrian.dungeonkeeper.common.object;
+package am.adrian.dungeonkeeper.common.object.trait;
 
 import am.adrian.dungeonkeeper.common.constant.Direction;
 
-public interface Walks extends Movable {
+public interface CanWalk extends CanMove {
 
     void walk(Direction dir);
 

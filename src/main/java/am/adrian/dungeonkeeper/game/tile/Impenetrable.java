@@ -1,33 +1,32 @@
-package am.adrian.dungeonkeeper.game.object;
+package am.adrian.dungeonkeeper.game.tile;
 
-import am.adrian.dungeonkeeper.common.coords.Coords;
 import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
 import am.adrian.dungeonkeeper.common.object.GameObject;
-import am.adrian.dungeonkeeper.common.object.path.Path;
+import am.adrian.dungeonkeeper.common.object.wall.Wall;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
-public class UnclaimedPath implements Path {
+public class Impenetrable implements Wall {
 
     private final ImmutableCoords coords;
 
-    public UnclaimedPath(int x, int y) {
+    public Impenetrable(int x, int y) {
         this.coords = new ImmutableCoords(x, y);
     }
 
     @Override
-    public Coords getCoords() {
+    public ImmutableCoords getCoords() {
         return coords;
     }
 
     @Override
     public String getTexture() {
-        return "dirt.jpg";
+        return "impenetrable.png";
     }
 
     @Override
     public boolean collides(@NotNull GameObject gameObject) {
-        return false;
+        return true;
     }
 }

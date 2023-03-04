@@ -2,9 +2,13 @@ package am.adrian.dungeonkeeper.game;
 
 import am.adrian.dungeonkeeper.common.constant.Direction;
 import am.adrian.dungeonkeeper.common.coords.Coords;
-import am.adrian.dungeonkeeper.common.object.*;
+import am.adrian.dungeonkeeper.common.object.Creature;
+import am.adrian.dungeonkeeper.common.object.GameObject;
 import am.adrian.dungeonkeeper.common.object.path.Path;
 import am.adrian.dungeonkeeper.common.object.path.Water;
+import am.adrian.dungeonkeeper.common.object.trait.CanFly;
+import am.adrian.dungeonkeeper.common.object.trait.CanSwim;
+import am.adrian.dungeonkeeper.common.object.trait.CanWalk;
 import am.adrian.dungeonkeeper.common.object.wall.Wall;
 import org.springframework.stereotype.Component;
 
@@ -12,21 +16,21 @@ import org.springframework.stereotype.Component;
 public record MoveValidator(GameMap map) {
 
     public boolean validateWalk(Creature character, Direction dir) {
-        if (!(character instanceof Walks)) {
+        if (!(character instanceof CanWalk)) {
             return false;
         }
         return isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) instanceof Path;
     }
 
     public boolean validateSwim(Creature character, Direction dir) {
-        if (!(character instanceof Swims)) {
+        if (!(character instanceof CanSwim)) {
             return false;
         }
         return isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) instanceof Water;
     }
 
     public boolean validateFly(Creature character, Direction dir) {
-        if (!(character instanceof Flies)) {
+        if (!(character instanceof CanFly)) {
             return false;
         }
         return isMoveWithinMap(character, dir) && !(objectToMoveTo(character.getCoords(), dir) instanceof Wall);

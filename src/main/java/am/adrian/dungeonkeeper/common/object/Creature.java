@@ -1,4 +1,6 @@
 package am.adrian.dungeonkeeper.common.object;
 
-public interface Creature extends GameObject, Sizable {
+import am.adrian.dungeonkeeper.common.object.trait.HasSize;
+
+public interface Creature extends GameObject, HasSize {
 }

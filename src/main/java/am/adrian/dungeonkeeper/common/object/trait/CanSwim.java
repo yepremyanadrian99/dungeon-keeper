@@ -1,8 +1,8 @@
-package am.adrian.dungeonkeeper.common.object;
+package am.adrian.dungeonkeeper.common.object.trait;
 
 import am.adrian.dungeonkeeper.common.constant.Direction;
 
-public interface Swims extends Movable {
+public interface CanSwim extends CanMove {
 
     void swim(Direction dir);
 

@@ -1,8 +1,8 @@
-package am.adrian.dungeonkeeper.common.`object`
+package am.adrian.dungeonkeeper.common.`object`.trait
 
 import am.adrian.dungeonkeeper.common.constant.Direction
 
-interface Movable {
+interface CanMove {
 
     fun move(dir: Direction, delta: Int)
 }
