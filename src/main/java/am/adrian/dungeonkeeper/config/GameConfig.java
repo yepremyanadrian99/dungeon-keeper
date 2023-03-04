@@ -1,10 +1,11 @@
 package am.adrian.dungeonkeeper.config;
 
+import am.adrian.dungeonkeeper.game.Game;
 import am.adrian.dungeonkeeper.game.GameMap;
 import am.adrian.dungeonkeeper.game.GameStateService;
-import am.adrian.dungeonkeeper.game.MoveValidator;
+import am.adrian.dungeonkeeper.game.controller.GameKeyController;
+import am.adrian.dungeonkeeper.game.controller.GameRenderController;
 import am.adrian.dungeonkeeper.helper.ResourceHelper;
-import am.adrian.dungeonkeeper.renderer.Game;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,19 +13,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Configuration
 @EnableScheduling
 public class GameConfig {
-
-    // Should only be used for executing handlers.
-    // Otherwise, the game might not exit after it's finished.
-    @Bean
-    public ExecutorService handlerExecutor() {
-        return Executors.newCachedThreadPool();
-    }
 
     @Bean
     public GameMap gameMap(
@@ -35,27 +27,47 @@ public class GameConfig {
     }
 
     @Bean
-    public Game gameRenderer(
-            GameStateService stateService,
+    public GameRenderController gameRenderController(
             GameMap gameMap,
-            MoveValidator moveValidator,
             ResourceHelper resourceHelper,
-            @Value("${window.width}") int width,
-            @Value("${window.height}") int height,
             @Value("${window.offsetX}") int offsetX,
             @Value("${window.offsetY}") int offsetY,
             @Value("${window.cell.size}") int cellSize,
             @Value("${window.map.outlines}") boolean outlines
     ) {
-        final var gameRenderer = new Game(
-                stateService, gameMap, moveValidator, resourceHelper,
-                offsetX, offsetY, cellSize, outlines
+        return new GameRenderController(
+                gameMap,
+                resourceHelper,
+                offsetX,
+                offsetY,
+                cellSize,
+                outlines
         );
-        gameRenderer.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        gameRenderer.setSize(width, height);
-        gameRenderer.setVisible(true);
-        gameRenderer.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-        gameRenderer.setBackground(Color.BLACK);
-        return gameRenderer;
+    }
+
+    @Bean
+    public GameKeyController gameKeyController(
+            GameMap gameMap,
+            @Value("${window.cell.size}") int cellSize
+    ) {
+        return new GameKeyController(gameMap, cellSize);
+    }
+
+
+    @Bean
+    public Game game(
+            GameStateService stateService,
+            GameRenderController gameRenderer,
+            GameKeyController keyController,
+            @Value("${window.width}") int width,
+            @Value("${window.height}") int height
+    ) {
+        final var game = new Game(stateService, gameRenderer, keyController);
+        game.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        game.setSize(width, height);
+        game.setVisible(true);
+        game.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        game.setBackground(Color.BLACK);
+        return game;
     }
 }

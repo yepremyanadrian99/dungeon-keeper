@@ -3,7 +3,6 @@ package am.adrian.dungeonkeeper.game;
 import am.adrian.dungeonkeeper.common.object.Creature;
 import am.adrian.dungeonkeeper.common.object.GameObject;
 import am.adrian.dungeonkeeper.game.tile.UnclaimedPath;
-import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,7 +12,6 @@ import java.util.List;
 
 import static am.adrian.dungeonkeeper.helper.CollisionChecker.objectsCollide;
 
-@Getter
 public class GameMap {
 
     private static final Logger logger = LogManager.getLogger(GameMap.class);
@@ -33,6 +31,22 @@ public class GameMap {
                 objectMap[i][j] = new UnclaimedPath(j, i);
             }
         }
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public List<Creature> getCreatures() {
+        return creatures;
+    }
+
+    public GameObject[][] getObjectMap() {
+        return objectMap;
     }
 
     public void addObject(GameObject object) {
