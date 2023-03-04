@@ -4,12 +4,12 @@ import am.adrian.dungeonkeeper.common.constant.Direction;
 import am.adrian.dungeonkeeper.common.coords.Coords;
 import am.adrian.dungeonkeeper.common.object.Creature;
 import am.adrian.dungeonkeeper.common.object.GameObject;
-import am.adrian.dungeonkeeper.common.object.path.Path;
-import am.adrian.dungeonkeeper.common.object.path.Water;
+import am.adrian.dungeonkeeper.common.object.Path;
+import am.adrian.dungeonkeeper.common.object.Wall;
 import am.adrian.dungeonkeeper.common.object.trait.CanFly;
 import am.adrian.dungeonkeeper.common.object.trait.CanSwim;
 import am.adrian.dungeonkeeper.common.object.trait.CanWalk;
-import am.adrian.dungeonkeeper.common.object.wall.Wall;
+import am.adrian.dungeonkeeper.game.tile.Water;
 import org.springframework.stereotype.Component;
 
 @Component

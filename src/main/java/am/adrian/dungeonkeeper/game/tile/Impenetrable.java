@@ -2,7 +2,7 @@ package am.adrian.dungeonkeeper.game.tile;
 
 import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
 import am.adrian.dungeonkeeper.common.object.GameObject;
-import am.adrian.dungeonkeeper.common.object.wall.Wall;
+import am.adrian.dungeonkeeper.common.object.Wall;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 

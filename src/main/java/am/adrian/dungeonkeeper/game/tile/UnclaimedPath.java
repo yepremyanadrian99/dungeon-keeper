@@ -3,7 +3,7 @@ package am.adrian.dungeonkeeper.game.tile;
 import am.adrian.dungeonkeeper.common.coords.Coords;
 import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
 import am.adrian.dungeonkeeper.common.object.GameObject;
-import am.adrian.dungeonkeeper.common.object.path.Path;
+import am.adrian.dungeonkeeper.common.object.Path;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 

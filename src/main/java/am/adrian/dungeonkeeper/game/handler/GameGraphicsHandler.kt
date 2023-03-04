@@ -1,22 +1,26 @@
-package am.adrian.dungeonkeeper.game.controller
+package am.adrian.dungeonkeeper.game.handler
 
+import am.adrian.dungeonkeeper.common.handler.GameEventHandler
 import am.adrian.dungeonkeeper.game.GameMap
 import am.adrian.dungeonkeeper.helper.ResourceHelper
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 import java.awt.Color
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
-class GameRenderController(
+@Component
+class GameGraphicsHandler(
     private val map: GameMap,
     private val resourceHelper: ResourceHelper,
-    private val offsetX: Int,
-    private val offsetY: Int,
-    private val cellSize: Int,
-    private val outlines: Boolean
-) {
+    @Value("\${window.offsetX}") private val offsetX: Int,
+    @Value("\${window.offsetY}") private val offsetY: Int,
+    @Value("\${window.cell.size}") private val cellSize: Int,
+    @Value("\${window.map.outlines}") private val outlines: Boolean
+) : GameEventHandler<Graphics> {
 
-    fun paint(g: Graphics) {
+    override fun handle(event: Graphics) {
         val bufferedMap = BufferedImage(
             cellSize * map.width,
             cellSize * map.height,
@@ -29,19 +33,19 @@ class GameRenderController(
             drawOutlines(g2d)
         }
 
-        val g2dComponent = g as Graphics2D
+        val g2dComponent = event as Graphics2D
         g2dComponent.drawImage(bufferedMap, null, offsetX, offsetY)
     }
 
     private fun drawLand(g2d: Graphics2D) {
         for (i in map.objectMap.indices) {
             for (j in map.objectMap[i].indices) {
-                val gameObject = map.objectMap[i][j]
-                val image: BufferedImage = resourceHelper.loadBufferedImage(gameObject.getTexture())
+                val gameObject = map.objectMap[i][j] ?: continue
+                val image: BufferedImage = resourceHelper.loadBufferedImage(gameObject.texture)
                 g2d.drawImage(
                     image,
-                    cellSize * gameObject.getCoords().getX(),
-                    cellSize * gameObject.getCoords().getY(),
+                    cellSize * gameObject.coords.x,
+                    cellSize * gameObject.coords.y,
                     cellSize,
                     cellSize,
                     null
