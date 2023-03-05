@@ -1,8 +1,8 @@
-package am.adrian.dungeonkeeper.ui.handler.gamepanel
+package am.adrian.dungeonkeeper.ui.gamemap.handler
 
 import am.adrian.dungeonkeeper.game.GameMap
 import am.adrian.dungeonkeeper.helper.ResourceHelper
-import am.adrian.dungeonkeeper.ui.handler.UIEventHandler
+import am.adrian.dungeonkeeper.ui.PanelEventHandler
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.awt.Color
@@ -11,12 +11,12 @@ import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 @Component
-class GamePanelGraphicsHandler(
+class GameMapPanelGraphicsHandler(
     private val map: GameMap,
     private val resourceHelper: ResourceHelper,
     @Value("\${gameMapPanel.cellSize}") private val cellSize: Int,
     @Value("\${gameMapPanel.map.outlines}") private val outlines: Boolean
-) : UIEventHandler<Graphics> {
+) : PanelEventHandler<Graphics> {
 
     override fun handle(event: Graphics) {
         val bufferedMap = BufferedImage(
@@ -69,7 +69,7 @@ class GamePanelGraphicsHandler(
     private fun drawOutlines(g2d: Graphics2D) {
         for (i in 0 until map.height) {
             for (j in 0 until map.width) {
-                g2d.color = Color.white
+                g2d.color = Color.WHITE
                 g2d.drawLine(j * cellSize, 0, j * cellSize, map.height * cellSize)
                 g2d.drawLine(0, i * cellSize, cellSize * map.width, i * cellSize)
             }
