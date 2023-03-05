@@ -1,21 +1,21 @@
-package am.adrian.dungeonkeeper.game.handler
+package am.adrian.dungeonkeeper.ui.handler.gamepanel
 
-import am.adrian.dungeonkeeper.common.handler.GameEventHandler
 import am.adrian.dungeonkeeper.constant.Direction
 import am.adrian.dungeonkeeper.game.GameMap
 import am.adrian.dungeonkeeper.model.coords.Coords
 import am.adrian.dungeonkeeper.model.gameobject.GameObject
 import am.adrian.dungeonkeeper.model.gameobject.character.Goblin
+import am.adrian.dungeonkeeper.ui.handler.UIEventHandler
 import org.apache.logging.log4j.kotlin.Logging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.awt.event.KeyEvent
 
 @Component
-class GameKeyEventHandler(
+class GamePanelKeyEventHandler(
     private val map: GameMap,
-    @Value("\${window.cell.size}") private val cellSize: Int
-) : GameEventHandler<KeyEvent> {
+    @Value("\${gameMapPanel.cellSize}") private val cellSize: Int
+) : UIEventHandler<KeyEvent> {
 
     companion object : Logging
 

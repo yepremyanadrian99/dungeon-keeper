@@ -1,8 +1,8 @@
-package am.adrian.dungeonkeeper.game.handler
+package am.adrian.dungeonkeeper.ui.handler.gamepanel
 
-import am.adrian.dungeonkeeper.common.handler.GameEventHandler
 import am.adrian.dungeonkeeper.game.GameMap
 import am.adrian.dungeonkeeper.helper.ResourceHelper
+import am.adrian.dungeonkeeper.ui.handler.UIEventHandler
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.awt.Color
@@ -11,14 +11,12 @@ import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 @Component
-class GameGraphicsHandler(
+class GamePanelGraphicsHandler(
     private val map: GameMap,
     private val resourceHelper: ResourceHelper,
-    @Value("\${window.offsetX}") private val offsetX: Int,
-    @Value("\${window.offsetY}") private val offsetY: Int,
-    @Value("\${window.cell.size}") private val cellSize: Int,
-    @Value("\${window.map.outlines}") private val outlines: Boolean
-) : GameEventHandler<Graphics> {
+    @Value("\${gameMapPanel.cellSize}") private val cellSize: Int,
+    @Value("\${gameMapPanel.map.outlines}") private val outlines: Boolean
+) : UIEventHandler<Graphics> {
 
     override fun handle(event: Graphics) {
         val bufferedMap = BufferedImage(
@@ -34,7 +32,7 @@ class GameGraphicsHandler(
         }
 
         val g2dComponent = event as Graphics2D
-        g2dComponent.drawImage(bufferedMap, null, offsetX, offsetY)
+        g2dComponent.drawImage(bufferedMap, null, 0, 0)
     }
 
     private fun drawLand(g2d: Graphics2D) {
