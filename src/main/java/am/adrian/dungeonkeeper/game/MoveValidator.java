@@ -1,15 +1,15 @@
 package am.adrian.dungeonkeeper.game;
 
-import am.adrian.dungeonkeeper.common.constant.Direction;
-import am.adrian.dungeonkeeper.common.coords.Coords;
-import am.adrian.dungeonkeeper.common.object.Creature;
-import am.adrian.dungeonkeeper.common.object.GameObject;
-import am.adrian.dungeonkeeper.common.object.Path;
-import am.adrian.dungeonkeeper.common.object.Wall;
-import am.adrian.dungeonkeeper.common.object.trait.CanFly;
-import am.adrian.dungeonkeeper.common.object.trait.CanSwim;
-import am.adrian.dungeonkeeper.common.object.trait.CanWalk;
-import am.adrian.dungeonkeeper.game.tile.Water;
+import am.adrian.dungeonkeeper.constant.Direction;
+import am.adrian.dungeonkeeper.model.coords.Coords;
+import am.adrian.dungeonkeeper.model.gameobject.Creature;
+import am.adrian.dungeonkeeper.model.gameobject.GameObject;
+import am.adrian.dungeonkeeper.model.gameobject.Path;
+import am.adrian.dungeonkeeper.model.gameobject.Wall;
+import am.adrian.dungeonkeeper.model.gameobject.tile.Water;
+import am.adrian.dungeonkeeper.model.gameobject.trait.CanFly;
+import am.adrian.dungeonkeeper.model.gameobject.trait.CanSwim;
+import am.adrian.dungeonkeeper.model.gameobject.trait.CanWalk;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -38,16 +38,16 @@ public record MoveValidator(GameMap map) {
 
     private boolean isMoveWithinMap(Creature character, Direction dir) {
         return switch (dir) {
-            case UP -> character.getCoords().getY() > 0;
-            case DOWN -> character.getCoords().getY() < map.getHeight() - 1;
-            case LEFT -> character.getCoords().getX() > 0;
-            case RIGHT -> character.getCoords().getX() < map.getWidth() - 1;
+            case UP -> character.getCoords().y() > 0;
+            case DOWN -> character.getCoords().y() < map.getHeight() - 1;
+            case LEFT -> character.getCoords().x() > 0;
+            case RIGHT -> character.getCoords().x() < map.getWidth() - 1;
         };
     }
 
     private GameObject objectToMoveTo(Coords characterCoords, Direction dir) {
-        int x = characterCoords.getX();
-        int y = characterCoords.getY();
+        int x = characterCoords.x();
+        int y = characterCoords.y();
         return switch (dir) {
             case UP -> map.getObjectMap()[y - 1][x];
             case DOWN -> map.getObjectMap()[y + 1][x];

@@ -1,7 +1,7 @@
 package am.adrian.dungeonkeeper.helper;
 
-import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
-import am.adrian.dungeonkeeper.common.object.GameObject;
+import am.adrian.dungeonkeeper.model.coords.ImmutableCoords;
+import am.adrian.dungeonkeeper.model.gameobject.GameObject;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

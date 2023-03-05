@@ -1,6 +1,6 @@
 package am.adrian.dungeonkeeper.helper
 
-import am.adrian.dungeonkeeper.common.`object`.GameObject
+import am.adrian.dungeonkeeper.model.gameobject.GameObject
 
 object CollisionChecker {
 

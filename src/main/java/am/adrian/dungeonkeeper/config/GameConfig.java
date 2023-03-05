@@ -1,10 +1,10 @@
 package am.adrian.dungeonkeeper.config;
 
-import am.adrian.dungeonkeeper.common.coords.ImmutableCoords;
-import am.adrian.dungeonkeeper.common.health.Health;
 import am.adrian.dungeonkeeper.game.GameMap;
-import am.adrian.dungeonkeeper.game.character.Goblin;
-import am.adrian.dungeonkeeper.game.tile.Impenetrable;
+import am.adrian.dungeonkeeper.model.coords.ImmutableCoords;
+import am.adrian.dungeonkeeper.model.gameobject.character.Goblin;
+import am.adrian.dungeonkeeper.model.gameobject.tile.Impenetrable;
+import am.adrian.dungeonkeeper.model.health.Health;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -41,8 +41,8 @@ public class GameConfig {
     @PostConstruct
     public void initCharacters() {
         final var goblin = new Goblin(new Health(goblinMaxHealth), goblinWidth, goblinHeight);
-        goblin.getCoords().setX(10);
-        goblin.getCoords().setY(4);
+        goblin.getCoords().x(10);
+        goblin.getCoords().y(4);
         map.addCreature(goblin);
     }
 }
