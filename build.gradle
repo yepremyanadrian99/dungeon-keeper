@@ -34,7 +34,7 @@ test {
 }
 
 application {
-    mainClass = 'am.adrian.dungeonkeeper.Application'
+    mainClass = 'am.adrian.dungeonkeeper.ApplicationKt'
 }
 
 run {

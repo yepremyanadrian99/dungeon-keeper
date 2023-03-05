@@ -1,10 +1,10 @@
 package am.adrian.dungeonkeeper.game
 
 import am.adrian.dungeonkeeper.helper.CollisionChecker.objectsCollide
-import am.adrian.dungeonkeeper.model.gameobject.Creature
 import am.adrian.dungeonkeeper.model.gameobject.GameObject
-import am.adrian.dungeonkeeper.model.gameobject.Path
-import am.adrian.dungeonkeeper.model.gameobject.tile.UnclaimedPath
+import am.adrian.dungeonkeeper.model.gameobject.character.Creature
+import am.adrian.dungeonkeeper.model.gameobject.tile.path.Path
+import am.adrian.dungeonkeeper.model.gameobject.tile.path.UnclaimedPath
 import org.apache.logging.log4j.kotlin.Logging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -29,13 +29,8 @@ class GameMap(
     companion object : Logging
 
     fun addObject(gameObject: GameObject) {
-        if (gameObject.coords == null) {
-            logger.debug("Not adding object as its coords are null")
-            return
-        }
-
-        logger.debug { "Adding object with x: ${gameObject.coords.x()} and y: ${gameObject.coords.y()}" }
-        objectMap[gameObject.coords.y()][gameObject.coords.x()] = gameObject
+        logger.debug { "Adding object with x: ${gameObject.getCoords().x()} and y: ${gameObject.getCoords().y()}" }
+        objectMap[gameObject.getCoords().y()][gameObject.getCoords().x()] = gameObject
     }
 
     fun addObjects(objectsToAdd: Collection<GameObject>) {
@@ -43,13 +38,8 @@ class GameMap(
     }
 
     fun removeObject(gameObject: GameObject) {
-        if (gameObject.coords == null) {
-            logger.debug("Not removing object as its coords are null")
-            return
-        }
-
-        logger.debug { "Removing object with x: ${gameObject.coords.x()} and y: ${gameObject.coords.y()}" }
-        removeObject(gameObject.coords.x(), gameObject.coords.y())
+        logger.debug { "Removing object with x: ${gameObject.getCoords().x()} and y: ${gameObject.getCoords().y()}" }
+        removeObject(gameObject.getCoords().x(), gameObject.getCoords().y())
     }
 
     fun removeObject(x: Int, y: Int) {
@@ -57,8 +47,8 @@ class GameMap(
     }
 
     fun addCreature(creature: Creature) {
-        val x: Int = creature.coords.x()
-        val y: Int = creature.coords.y()
+        val x: Int = creature.getCoords().x()
+        val y: Int = creature.getCoords().y()
         val gameObject: GameObject = objectMap[y][x] ?: throw RuntimeException("Object was null at x: $x and y: $y")
         if (gameObject !is Path && objectsCollide(gameObject, creature)) {
             logger.debug("Not adding creature as its colliding with another object")

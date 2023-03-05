@@ -30,7 +30,7 @@ class Game(
 
     @Scheduled(fixedRate = 1L)
     fun update() {
-        if (!stateService.isRunning) {
+        if (!stateService.isStarted()) {
             repaint()
         }
     }

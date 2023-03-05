@@ -41,11 +41,11 @@ class GameGraphicsHandler(
         for (i in map.objectMap.indices) {
             for (j in map.objectMap[i].indices) {
                 val gameObject = map.objectMap[i][j] ?: continue
-                val image: BufferedImage = resourceHelper.loadBufferedImage(gameObject.texture)
+                val image: BufferedImage = resourceHelper.loadBufferedImage(gameObject.getTexture())
                 g2d.drawImage(
                     image,
-                    cellSize * gameObject.coords.x(),
-                    cellSize * gameObject.coords.y(),
+                    cellSize * gameObject.getCoords().x(),
+                    cellSize * gameObject.getCoords().y(),
                     cellSize,
                     cellSize,
                     null
@@ -56,11 +56,11 @@ class GameGraphicsHandler(
 
     private fun drawCreatures(g2d: Graphics2D) {
         for (creature in map.creatures) {
-            val image: BufferedImage = resourceHelper.loadBufferedImage(creature.texture)
+            val image: BufferedImage = resourceHelper.loadBufferedImage(creature.getTexture())
             g2d.drawImage(
                 image,
-                creature.coords.x(),
-                creature.coords.y(),
+                creature.getCoords().x(),
+                creature.getCoords().y(),
                 creature.getWidth(),
                 creature.getHeight(),
                 null

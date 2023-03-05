@@ -23,9 +23,10 @@ class GameKeyEventHandler(
         if (event.id != KeyEvent.KEY_TYPED) {
             return
         }
+
         val goblin = map.creatures[0] as Goblin
-        val gameObject = creatureStandsOn(goblin.coords) ?: return
-        logger.info("Goblin is on: " + gameObject.texture)
+        val gameObject = creatureStandsOn(goblin.getCoords()) ?: return
+        logger.info("Goblin is on: " + gameObject.getTexture())
 
         when (event.keyChar) {
             'w' -> goblin.walk(Direction.UP)

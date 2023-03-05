@@ -1,8 +1,7 @@
-package am.adrian.dungeonkeeper.model.gameobject.tile
+package am.adrian.dungeonkeeper.model.gameobject.tile.path
 
 import am.adrian.dungeonkeeper.model.coords.Coords
 import am.adrian.dungeonkeeper.model.coords.ImmutableCoords
-import am.adrian.dungeonkeeper.model.gameobject.Path
 
 private const val TEXTURE: String = "water.png"
 

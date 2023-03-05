@@ -6,5 +6,5 @@ data class Player(
     val id: String,
     val name: String,
     val color: PlayerColor,
-    val isComputer: Boolean
+    val isAi: Boolean
 )
