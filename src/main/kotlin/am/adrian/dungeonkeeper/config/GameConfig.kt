@@ -36,14 +36,18 @@ open class GameConfig(
         )
         map.addObjects(
             betweenPoints(
-                0, height - 1,
-                width - 1, height - 1
+                0,
+                height - 1,
+                width - 1,
+                height - 1
             ) { x: Int, y: Int -> ImpenetrableWall(x, y) }
         )
         map.addObjects(
             betweenPoints(
-                width - 1, 0,
-                width - 1, height - 1
+                width - 1,
+                0,
+                width - 1,
+                height - 1
             ) { x: Int, y: Int -> ImpenetrableWall(x, y) }
         )
     }

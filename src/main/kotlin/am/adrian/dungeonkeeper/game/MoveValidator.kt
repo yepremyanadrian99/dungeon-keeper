@@ -16,16 +16,25 @@ import org.springframework.stereotype.Component
 class MoveValidator(private val map: GameMap) {
 
     fun validateWalk(character: Creature, dir: Direction): Boolean =
-        if (character !is CanWalk) false
-        else isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) is Path
+        if (character !is CanWalk) {
+            false
+        } else {
+            isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) is Path
+        }
 
     fun validateSwim(character: Creature, dir: Direction): Boolean =
-        if (character !is CanSwim) false
-        else isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) is Water
+        if (character !is CanSwim) {
+            false
+        } else {
+            isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) is Water
+        }
 
     fun validateFly(character: Creature, dir: Direction): Boolean =
-        if (character !is CanFly) false
-        else isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) !is Wall
+        if (character !is CanFly) {
+            false
+        } else {
+            isMoveWithinMap(character, dir) && objectToMoveTo(character.getCoords(), dir) !is Wall
+        }
 
     private fun isMoveWithinMap(character: Creature, dir: Direction): Boolean {
         return when (dir) {

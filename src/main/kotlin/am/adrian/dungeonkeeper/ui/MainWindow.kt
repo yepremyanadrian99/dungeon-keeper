@@ -16,7 +16,6 @@ import java.awt.GridBagLayout
 import java.awt.event.KeyEvent
 import javax.swing.JFrame
 
-
 @Component
 class MainWindow(
     private val gameMapPanel: GameMapPanel,
