@@ -1,9 +1,9 @@
-package am.adrian.dungeonkeeper.behavior.node.sequence
+package am.adrian.dungeonkeeper.behavior.node.and
 
 import am.adrian.dungeonkeeper.behavior.node.ExpandableNode
 import am.adrian.dungeonkeeper.behavior.node.Node
 
-class SequenceNode(
+class AndNode(
     override val name: String,
     override val childNodes: MutableList<Node> = ArrayList()
 ) : ExpandableNode {

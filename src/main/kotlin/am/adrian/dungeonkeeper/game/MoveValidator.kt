@@ -13,7 +13,7 @@ import am.adrian.dungeonkeeper.model.gameobject.trait.CanWalk
 import org.springframework.stereotype.Component
 
 @Component
-class MoveValidator(private val map: GameMap) {
+class MoveValidator(private val map: Game) {
 
     fun validateWalk(character: Creature, dir: Direction): Boolean =
         if (character !is CanWalk) {

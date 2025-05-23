@@ -1,6 +1,6 @@
 package am.adrian.dungeonkeeper.config
 
-import am.adrian.dungeonkeeper.game.GameMap
+import am.adrian.dungeonkeeper.game.Game
 import am.adrian.dungeonkeeper.helper.betweenPoints
 import am.adrian.dungeonkeeper.model.coords.ImmutableCoords
 import am.adrian.dungeonkeeper.model.gameobject.creature.Goblin
@@ -12,7 +12,7 @@ import javax.annotation.PostConstruct
 
 @Configuration
 open class GameConfig(
-    private val map: GameMap,
+    private val map: Game,
     @Value("\${creatures.goblin.width}") private val goblinWidth: Int,
     @Value("\${creatures.goblin.height}") private val goblinHeight: Int,
     @Value("\${creatures.goblin.maxHealth}") private val goblinMaxHealth: Int
@@ -54,7 +54,7 @@ open class GameConfig(
 
     @PostConstruct
     open fun initCharacters() {
-        val goblin = Goblin(Health(goblinMaxHealth), goblinWidth, goblinHeight)
+        val goblin = Goblin(health = Health(goblinMaxHealth), width = goblinWidth, height = goblinHeight)
         goblin.getCoords().x(10)
         goblin.getCoords().y(4)
         map.addCreature(goblin)

@@ -3,8 +3,8 @@ package am.adrian.dungeonkeeper.behavior
 import am.adrian.dungeonkeeper.behavior.node.Node
 import am.adrian.dungeonkeeper.behavior.node.action.ActionNode
 import am.adrian.dungeonkeeper.behavior.node.condition.ConditionNode
-import am.adrian.dungeonkeeper.behavior.node.selector.SelectorNode
-import am.adrian.dungeonkeeper.behavior.node.sequence.SequenceNode
+import am.adrian.dungeonkeeper.behavior.node.or.OrNode
+import am.adrian.dungeonkeeper.behavior.node.and.AndNode
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -56,10 +56,10 @@ class BehaviorTreeTest {
         // Arrange
         val condition = mockk<ConditionNode>()
         val action = mockk<ActionNode>()
-        val subSelector = mockk<SelectorNode>()
-        val sequence = mockk<SequenceNode>()
+        val subSelector = mockk<OrNode>()
+        val sequence = mockk<AndNode>()
 
-        val selector = SelectorNode("Test")
+        val selector = OrNode("Test")
         selector.addChild(condition)
         selector.addChild(action)
         selector.addChild(subSelector)
@@ -85,10 +85,10 @@ class BehaviorTreeTest {
         // Arrange
         val condition = mockk<ConditionNode>()
         val action = mockk<ActionNode>()
-        val subSelector = mockk<SelectorNode>()
-        val sequence = mockk<SequenceNode>()
+        val subSelector = mockk<OrNode>()
+        val sequence = mockk<AndNode>()
 
-        val selector = SelectorNode("Test")
+        val selector = OrNode("Test")
         selector.addChild(condition)
         selector.addChild(action)
         selector.addChild(subSelector)
@@ -115,10 +115,10 @@ class BehaviorTreeTest {
         // Arrange
         val condition = mockk<ConditionNode>()
         val action = mockk<ActionNode>()
-        val selector = mockk<SelectorNode>()
-        val subSequence = mockk<SequenceNode>()
+        val selector = mockk<OrNode>()
+        val subSequence = mockk<AndNode>()
 
-        val sequence = SequenceNode("Test")
+        val sequence = AndNode("Test")
         sequence.addChild(condition)
         sequence.addChild(action)
         sequence.addChild(selector)
@@ -145,10 +145,10 @@ class BehaviorTreeTest {
         // Arrange
         val condition = mockk<ConditionNode>()
         val action = mockk<ActionNode>()
-        val selector = mockk<SelectorNode>()
-        val subSequence = mockk<SequenceNode>()
+        val selector = mockk<OrNode>()
+        val subSequence = mockk<AndNode>()
 
-        val sequence = SequenceNode("Test")
+        val sequence = AndNode("Test")
         sequence.addChild(condition)
         sequence.addChild(action)
         sequence.addChild(selector)
@@ -172,11 +172,11 @@ class BehaviorTreeTest {
     @Test
     fun `should execute action node`() {
         // Arrange
-        val failingSequenceNode = mockk<SequenceNode>()
+        val failingAndNode = mockk<AndNode>()
         val condition = mockk<ConditionNode>()
         val action = mockk<ActionNode>()
 
-        every { failingSequenceNode.execute() } returns false
+        every { failingAndNode.execute() } returns false
         every { condition.execute() } returns true
         every { action.execute() } returns true
 
@@ -185,15 +185,15 @@ class BehaviorTreeTest {
             override val rootNode: Node
 
             init {
-                val sequenceNode = SequenceNode("Test node")
-                sequenceNode.addChild(condition)
-                sequenceNode.addChild(action)
+                val andNode = AndNode("Test node")
+                andNode.addChild(condition)
+                andNode.addChild(action)
 
-                val selectorNode = SelectorNode("Root node")
-                selectorNode.addChild(failingSequenceNode)
-                selectorNode.addChild(sequenceNode)
+                val orNode = OrNode("Root node")
+                orNode.addChild(failingAndNode)
+                orNode.addChild(andNode)
 
-                rootNode = selectorNode
+                rootNode = orNode
             }
         }
 
@@ -201,7 +201,7 @@ class BehaviorTreeTest {
         behaviorTree.execute()
 
         // Assert
-        verify(exactly = 1) { failingSequenceNode.execute() }
+        verify(exactly = 1) { failingAndNode.execute() }
         verify(exactly = 1) { condition.execute() }
         verify(exactly = 1) { action.execute() }
     }

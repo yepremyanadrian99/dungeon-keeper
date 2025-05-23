@@ -1,6 +1,6 @@
 package am.adrian.dungeonkeeper.ui.gamemap.handler
 
-import am.adrian.dungeonkeeper.game.GameMap
+import am.adrian.dungeonkeeper.game.Game
 import am.adrian.dungeonkeeper.helper.ResourceHelper
 import am.adrian.dungeonkeeper.ui.PanelEventHandler
 import org.springframework.beans.factory.annotation.Value
@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage
 
 @Component
 class GameMapPanelGraphicsHandler(
-    private val map: GameMap,
+    private val map: Game,
     private val resourceHelper: ResourceHelper,
     @Value("\${gameMapPanel.cellSize}") private val cellSize: Int,
     @Value("\${gameMapPanel.map.outlines}") private val outlines: Boolean

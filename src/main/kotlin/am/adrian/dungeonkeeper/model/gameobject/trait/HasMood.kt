@@ -7,8 +7,8 @@ interface HasMood {
     fun setMood(mood: Mood)
 
     enum class Mood(val symbol: Char) {
-        HAPPY('H'),
-        UNHAPPY('U'),
-        ANGRY('A');
+        HAPPY('^'),
+        UNHAPPY('_'),
+        ANGRY('!');
     }
 }

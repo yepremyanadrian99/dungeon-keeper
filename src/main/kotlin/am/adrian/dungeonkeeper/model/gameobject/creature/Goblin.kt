@@ -5,33 +5,25 @@ import am.adrian.dungeonkeeper.constant.Direction
 import am.adrian.dungeonkeeper.helper.Players
 import am.adrian.dungeonkeeper.model.coords.MutableCoords
 import am.adrian.dungeonkeeper.model.gameobject.GameObject
-import am.adrian.dungeonkeeper.model.gameobject.trait.CanEat
-import am.adrian.dungeonkeeper.model.gameobject.trait.CanFear
-import am.adrian.dungeonkeeper.model.gameobject.trait.CanLevel
-import am.adrian.dungeonkeeper.model.gameobject.trait.CanSwim
-import am.adrian.dungeonkeeper.model.gameobject.trait.CanWalk
-import am.adrian.dungeonkeeper.model.gameobject.trait.HasBehavior
-import am.adrian.dungeonkeeper.model.gameobject.trait.HasHealth
-import am.adrian.dungeonkeeper.model.gameobject.trait.HasMood
+import am.adrian.dungeonkeeper.model.gameobject.trait.*
 import am.adrian.dungeonkeeper.model.gameobject.trait.HasMood.Mood
-import am.adrian.dungeonkeeper.model.gameobject.trait.MAX_HUNGER_LEVEL
 import am.adrian.dungeonkeeper.model.health.Health
 import am.adrian.dungeonkeeper.model.player.Player
+import kotlin.math.max
+import kotlin.math.min
 
 private const val TEXTURE = "goblin.png"
 
 class Goblin(
-    private val health: Health,
     private val width: Int,
-    private val height: Int
+    private val height: Int,
+    private val health: Health,
+    private var hungerLevel: Int = 100,
+    private val coords: MutableCoords = MutableCoords(),
+    private var belongsTo: Player = Players.NEUTRAL_PLAYER,
+    private var mood: Mood = Mood.HAPPY,
+    private var level: Int = 1,
 ) : Creature, HasHealth, HasMood, HasBehavior, CanEat, CanWalk, CanSwim, CanLevel, CanFear {
-
-    private val coords: MutableCoords = MutableCoords()
-
-    private var belongsTo: Player = Players.NEUTRAL_PLAYER
-    private var level: Int = 1
-    private var hungerLevel = 100
-    private var mood = Mood.HAPPY
 
     override fun collides(gameObject: GameObject): Boolean = false
 
@@ -78,11 +70,13 @@ class Goblin(
         this.mood = mood
     }
 
-    override fun isHungry(): Boolean = hungerLevel < 20
+    override fun hungerLevel(): Int = hungerLevel
 
-    override fun eat() {
-        this.hungerLevel = MAX_HUNGER_LEVEL
+    override fun adjustHunger(level: Int) {
+        hungerLevel = min(CanEat.MAX_HUNGER_LEVEL, max(0, hungerLevel + level))
     }
+
+    override fun isHungry(): Boolean = hungerLevel < 20
 
     override fun getBehaviorTree() = GoblinBehaviorTree(this)
 }

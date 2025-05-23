@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 
 @Component
-class GameMap(
+class Game(
     @Value("\${gameMap.width}") val width: Int,
     @Value("\${gameMap.height}") val height: Int
 ) {

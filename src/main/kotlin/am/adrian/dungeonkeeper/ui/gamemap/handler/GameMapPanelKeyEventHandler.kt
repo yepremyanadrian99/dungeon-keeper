@@ -1,7 +1,7 @@
 package am.adrian.dungeonkeeper.ui.gamemap.handler
 
 import am.adrian.dungeonkeeper.constant.Direction
-import am.adrian.dungeonkeeper.game.GameMap
+import am.adrian.dungeonkeeper.game.Game
 import am.adrian.dungeonkeeper.model.coords.Coords
 import am.adrian.dungeonkeeper.model.gameobject.GameObject
 import am.adrian.dungeonkeeper.model.gameobject.creature.Goblin
@@ -13,7 +13,7 @@ import java.awt.event.KeyEvent
 
 @Component
 class GameMapPanelKeyEventHandler(
-    private val map: GameMap,
+    private val map: Game,
     @Value("\${gameMapPanel.cellSize}") private val cellSize: Int
 ) : PanelEventHandler<KeyEvent> {
 
