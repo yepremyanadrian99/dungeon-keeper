@@ -22,11 +22,18 @@ class GoblinBehaviorTree(val creature: Goblin) : BehaviorTree {
         val rootEatNode = AndNode("Eating node")
         val loopEatingNode = WhileNode("Loop eating node")
 
+        /* Node hierarchy:
+         * rootEatNode (AND)
+         *  ├── isHungry (Condition)
+         *  └── loopEatingNode (WHILE)
+         *       ├── eat (Action)
+         *       └── isHungerFull (Condition)
+         */
+
+        rootNode.addChild(rootEatNode)
         rootEatNode.addChild(isHungry)
         rootEatNode.addChild(loopEatingNode)
         loopEatingNode.addChild(eat)
         loopEatingNode.addChild(isHungerFull)
-
-        rootNode.addChild(rootEatNode)
     }
 }
